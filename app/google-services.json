@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "978427279509",
+    "firebase_url": "https://memes-c9e28.firebaseio.com",
+    "project_id": "memes-c9e28",
+    "storage_bucket": "memes-c9e28.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:978427279509:android:4a7b7ea40ad2e1a8",
+        "android_client_info": {
+          "package_name": "space.apple.three.memes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "978427279509-bnh3o4ht1cbmegfi6sh8o7ohnv5s0in0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "space.apple.three.memes",
+            "certificate_hash": "5900c4051a4c44354c23541988287e13979ab5fc"
+          }
+        },
+        {
+          "client_id": "978427279509-gfk7hdi5lr836j24ks03aehff55pghud.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBt0lASFKN4Ds0d5sDCUisIY9SUrscSle4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "978427279509-gfk7hdi5lr836j24ks03aehff55pghud.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
