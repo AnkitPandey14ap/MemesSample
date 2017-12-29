@@ -1,6 +1,8 @@
 package space.apple.three.memes;
 
+import android.app.DownloadManager;
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private Context context;
     private ArrayList<String> mDataset;
     private LayoutInflater layoutInflater;
+
+    DownloadManager downloadManager;
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public MyAdapter(ArrayList<String> myDataset, Context context) {
@@ -36,7 +40,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 //        holder.mImageView.setImageBitmap(BitmapFactory.decodeFile(mDataset.get(position)));
@@ -47,6 +51,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 .resize(500, 500)
                 .centerCrop()
                 .into(holder.mImageView);
+
+        holder.downloadAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                downloadManager=(DownloadManager)context.getSystemService(Context.DOWNLOAD_SERVICE);
+                Uri uri = Uri.parse(mDataset.get(position));
+                DownloadManager.Request request = new DownloadManager.Request(uri);
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                Long refrence = downloadManager.enqueue(request);
+
+            }
+        });
+
+
 
 //        Picasso.with(context).load(mDataset.get(position)).into(holder.mImageView);
     }
@@ -61,11 +79,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         // each data item is just a Image in this case
         public SquareImageView mImageView;
 //        public ImageView mImageView;
-
+        public ImageView downloadAction;
         public ViewHolder(View itemView) {
             super(itemView);
             mImageView = (SquareImageView) itemView.findViewById(R.id.imageView);
 //            mImageView =  itemView.findViewById(R.id.imageView);
+
+            downloadAction = itemView.findViewById(R.id.downloadAction);
         }
     }
 }

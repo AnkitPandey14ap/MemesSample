@@ -1,11 +1,16 @@
 package space.apple.three.memes;
 
+import android.content.Intent;
 import android.renderscript.Sampler;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 
 import com.google.firebase.database.DataSnapshot;
@@ -16,9 +21,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
-import javax.security.auth.login.LoginException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,85 +30,49 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView.Adapter mAdapter;
 
     private ArrayList<String> list;
-    HashMap<String, String> urls;
+    private ShareActionProvider mShareActionProvider;
+//    HashMap<String, String> urls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
 
-
-        // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("MemesUrls");
-
-
-
-/*
-        HashMap<String, String> names = new HashMap<>();
-
-        names.put("John", "John");
-        names.put("Tim", "Tim");
-        names.put("Sam", "Sam");
-        names.put("Ben", "Ben");
-*/
-
-//        myRef.setValue(names);
-
-
-
-        // Read from the database
-
         list = new ArrayList<String>();
 
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                HashMap<String, String> temp= (HashMap<String, String>) dataSnapshot.getValue();
-                urls = temp;
-
-//                ArrayList<String> l = new ArrayList<String>(urls.values());
-                list = new ArrayList<String>(urls.values());
-                mAdapter.notifyDataSetChanged();
-                Log.i(TAG, "onDataChange: notifyDataSetChanged()");
-
-                mRecyclerView.setLayoutManager(mLayoutManager);
-                mAdapter=new MyAdapter(list,MainActivity.this);
-                mRecyclerView.setAdapter(mAdapter);
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        });
-
-
-/*
-
-        list = new ArrayList<String>();
-        list.add("https://scontent.fdel8-1.fna.fbcdn.net/v/t1.0-9/26047176_183185412284140_5898557795865010042_n.jpg?oh=3629c95e285b443f2d848da7d7337fd5&oe=5AF515A6");
-        list.add("https://scontent.fdel8-1.fna.fbcdn.net/v/t1.0-9/25443267_969138979900758_5405573714344048029_n.png?oh=473a8a6ed8a0890645909760997e5e11&oe=5AB11B27");
-        list.add("http://i.imgur.com/DvpvklR.png");
-*/
+        SplashActivity splashActivity = new SplashActivity();
+        list=splashActivity.list;
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter=new MyAdapter(list,MainActivity.this);
         mRecyclerView.setAdapter(mAdapter);
 
+    }
 
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem item = menu.findItem(R.id.shareButton);
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Car Buddies");
 
+        String shareBody = "Now don't need to bother if you lost your friend's vehicle while driving just see their exact location in CAR BUDDIES app, if they are nearby or not \n\nThe best app to share your real-time location with friends while driving, where all your friends/family can see each other's location at the same time \n\nInstall the Android app \n";
+        shareBody= shareBody + "https://play.google.com/store/apps/details?id=ankit.applespace.carbuddies \n\n";
+
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+
+        //then set the sharingIntent
+        mShareActionProvider.setShareIntent(sharingIntent);
+
+        return true;
     }
 }
