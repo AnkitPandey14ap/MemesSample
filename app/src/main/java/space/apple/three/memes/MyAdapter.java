@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 
 import com.squareup.picasso.Picasso;
@@ -17,15 +18,17 @@ import java.util.ArrayList;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private Context context;
     private ArrayList<String> mDataset;
+    private ArrayList<String> keyList;
     private LayoutInflater layoutInflater;
 
     DownloadManager downloadManager;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(ArrayList<String> myDataset, Context context) {
+    public MyAdapter(ArrayList<String> myDataset,ArrayList<String> keyList, Context context) {
         layoutInflater = LayoutInflater.from(context);
         mDataset = myDataset;
         this.context = context;
+        this.keyList = keyList;
     }
 
     // Create new views (invoked by the layout manager)
@@ -46,6 +49,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 //        holder.mImageView.setImageBitmap(BitmapFactory.decodeFile(mDataset.get(position)));
 
 
+        holder.idTV.setText("Ref: "+keyList.get(position));
         Picasso.with(context)
                 .load(mDataset.get(position))
                 .resize(500, 500)
@@ -78,12 +82,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a Image in this case
         public SquareImageView mImageView;
-//        public ImageView mImageView;
+        public TextView idTV;
         public ImageView downloadAction;
         public ViewHolder(View itemView) {
             super(itemView);
             mImageView = (SquareImageView) itemView.findViewById(R.id.imageView);
-//            mImageView =  itemView.findViewById(R.id.imageView);
+            idTV =  itemView.findViewById(R.id.idTV);
 
             downloadAction = itemView.findViewById(R.id.downloadAction);
         }

@@ -1,26 +1,17 @@
 package space.apple.three.memes;
 
 import android.content.Intent;
-import android.renderscript.Sampler;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ShareActionProvider;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,7 +20,8 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayoutManager mLayoutManager;
     RecyclerView.Adapter mAdapter;
 
-    private ArrayList<String> list;
+    private ArrayList<String> valueList;
+    private ArrayList<String> keyList;
     private ShareActionProvider mShareActionProvider;
 //    HashMap<String, String> urls;
 
@@ -42,13 +34,15 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
 
-        list = new ArrayList<String>();
+        valueList = new ArrayList<String>();
+        keyList = new ArrayList<String>();
 
         SplashActivity splashActivity = new SplashActivity();
-        list=splashActivity.list;
+        valueList =splashActivity.valueList;
+        keyList =splashActivity.keyList;
 
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter=new MyAdapter(list,MainActivity.this);
+        mAdapter=new MyAdapter(valueList,keyList,MainActivity.this);
         mRecyclerView.setAdapter(mAdapter);
 
     }

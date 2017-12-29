@@ -8,7 +8,6 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -29,7 +28,8 @@ public class SplashActivity extends AppCompatActivity {
 
     private ProgressBar progressBar2;
 
-    public static ArrayList<String> list;
+    public static ArrayList<String> valueList;
+    public static ArrayList<String> keyList;
 //    HashMap<String, String> urls;
 
     @Override
@@ -61,7 +61,8 @@ public class SplashActivity extends AppCompatActivity {
                     HashMap<String, String> temp= (HashMap<String, String>) dataSnapshot.getValue();
 //                            urls = temp;
 
-                    list = new ArrayList<String>(temp.values());
+                    valueList = new ArrayList<String>(temp.values());
+                    keyList = new ArrayList<String>(temp.keySet());
 
                     startActivity(new Intent(SplashActivity.this,MainActivity.class));
                     finish();
