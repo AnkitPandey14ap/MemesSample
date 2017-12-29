@@ -6,5 +6,11 @@
     android:layout_height="match_parent"
     tools:context="space.apple.three.memes.FullSizeImage">
 
+    <ImageView
+        android:id="@+id/fullImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:adjustViewBounds="true"/>
 
 </android.support.constraint.ConstraintLayout>
