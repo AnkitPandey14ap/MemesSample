@@ -59,8 +59,9 @@ public class MainActivity extends AppCompatActivity {
         sharingIntent.setType("text/plain");
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Car Buddies");
 
-        String shareBody = "Now don't need to bother if you lost your friend's vehicle while driving just see their exact location in CAR BUDDIES app, if they are nearby or not \n\nThe best app to share your real-time location with friends while driving, where all your friends/family can see each other's location at the same time \n\nInstall the Android app \n";
-        shareBody= shareBody + "https://play.google.com/store/apps/details?id=ankit.applespace.carbuddies \n\n";
+        String shareBody = "Hey,This is the best app for MEMES and TROLLS, " +
+                "install this app for all the latest MEMES and TROLS from facebook and Twitter \n\nAndroid\n";
+        shareBody= shareBody + "https://play.google.com/store/apps/details?id=space.apple.three.memes \n\n";
 
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
 

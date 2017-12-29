@@ -2,6 +2,7 @@ package space.apple.three.memes;
 
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -52,8 +53,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.idTV.setText("Ref: "+keyList.get(position));
         Picasso.with(context)
                 .load(mDataset.get(position))
-                .resize(500, 500)
-                .centerCrop()
                 .into(holder.mImageView);
 
         holder.downloadAction.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +64,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                 Long refrence = downloadManager.enqueue(request);
 
+            }
+        });
+        //start fullSizeActivity on click
+        holder.mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(context,FullSizeImage.class);
+                intent.putExtra("URL", mDataset.get(position));
+                context.startActivity(intent);
             }
         });
 
