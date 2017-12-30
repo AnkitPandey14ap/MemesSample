@@ -3,8 +3,27 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16sp">
+    android:padding="4sp"
+    android:background="#000000">
 
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8sp"
+        android:elevation="@dimen/cardview_compat_inset_shadow">
+        <space.apple.three.memes.SquareImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="1sp"
+            android:layout_marginLeft="1sp"
+            android:layout_marginBottom="1sp"
+            android:layout_marginTop="1sp"/>
+
+    </android.support.v7.widget.CardView>
 
     <TextView
         android:id="@+id/idTV"
@@ -14,29 +33,21 @@
         android:layout_marginTop="8sp"
         android:layout_marginLeft="8sp"
         android:layout_marginBottom="16sp"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/card_view"
         android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-
-    <space.apple.three.memes.SquareImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="2sp"
-        android:layout_marginLeft="2sp"
-        android:layout_marginBottom="8sp"
-        android:layout_below="@+id/idTV"/>
 
     <ImageView
         android:id="@+id/downloadAction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/imageView"
-        android:layout_alignRight="@+id/imageView"
-        android:layout_alignTop="@+id/imageView"
-        android:background="#ffffff"
-        android:layout_marginTop="8sp"
-        android:layout_marginRight="8sp"
-        android:src="@drawable/ic_download" />
+
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/card_view"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:src="@mipmap/ic_download" />
 
 
 </RelativeLayout>

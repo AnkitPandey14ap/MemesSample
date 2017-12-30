@@ -4,16 +4,19 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
@@ -50,7 +53,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 //        holder.mImageView.setImageBitmap(BitmapFactory.decodeFile(mDataset.get(position)));
 
 
-        holder.idTV.setText("Ref: "+keyList.get(position));
+        holder.idTV.setText("Ref: #"+keyList.get(position));
         Picasso.with(context)
                 .load(mDataset.get(position))
                 .into(holder.mImageView);
@@ -58,11 +61,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.downloadAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                downloadManager=(DownloadManager)context.getSystemService(Context.DOWNLOAD_SERVICE);
+                /*downloadManager=(DownloadManager)context.getSystemService(Context.DOWNLOAD_SERVICE);
                 Uri uri = Uri.parse(mDataset.get(position));
                 DownloadManager.Request request = new DownloadManager.Request(uri);
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                 Long refrence = downloadManager.enqueue(request);
+*/
+                file_download(mDataset.get(position));
 
             }
         });
@@ -99,5 +104,31 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
             downloadAction = itemView.findViewById(R.id.downloadAction);
         }
+    }
+
+    public void file_download(String uRl) {
+        File direct = new File(Environment.getExternalStorageDirectory()
+                + "/dhaval_files");
+
+        if (!direct.exists()) {
+            direct.mkdirs();
+        }
+        Toast.makeText(context, "Downloading....", Toast.LENGTH_SHORT).show();
+
+        DownloadManager mgr = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+
+        Uri downloadUri = Uri.parse(uRl);
+        DownloadManager.Request request = new DownloadManager.Request(
+                downloadUri);
+        
+        request.setAllowedNetworkTypes(
+                DownloadManager.Request.NETWORK_WIFI
+                        | DownloadManager.Request.NETWORK_MOBILE)
+                .setAllowedOverRoaming(false).setTitle("Demo")
+                .setDescription("Something useful. No, really.")
+                .setDestinationInExternalPublicDir("/iMemes", "iMemes.jpg");
+
+        mgr.enqueue(request);
+
     }
 }

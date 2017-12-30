@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -19,6 +20,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -59,10 +64,27 @@ public class SplashActivity extends AppCompatActivity {
                     // This method is called once with the initial value and again
                     // whenever data at this location is updated.
                     HashMap<String, String> temp= (HashMap<String, String>) dataSnapshot.getValue();
-//                            urls = temp;
+                    temp.remove("\"6\"");
+
+
+/*
+                    TreeMap<String,String> tm = new TreeMap<String, String>(temp);
+
+                    Set set2 = tm.entrySet();
+                    Iterator it2 = set2.iterator();
+
+                    while(it2.hasNext()){
+                        Map.Entry me2 = (Map.Entry)it2.next();
+                        Log.i(TAG, " Key : "+me2.getKey()+" Value : "+me2.getValue()+" \n");
+                    }
+
+*/
 
                     valueList = new ArrayList<String>(temp.values());
                     keyList = new ArrayList<String>(temp.keySet());
+
+
+
 
                     startActivity(new Intent(SplashActivity.this,MainActivity.class));
                     finish();
@@ -101,7 +123,7 @@ public class SplashActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             fetchData();
                         }
-                    }).setCancelable(false);
+                    });
 
 
             AlertDialog dialog = builder.create();
@@ -121,4 +143,14 @@ public class SplashActivity extends AppCompatActivity {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    void sortMapByKey(HashMap<String,String> map){
+        TreeMap<String,String> mapSorted = new TreeMap<String, String>(map);
+
+
+//        mapSorted.forEach((key,value));
+
+        /*mapSorted.forEach((key, value) -> {
+            System.out.println(key + ", " + value);
+        });*/
+    }
 }
