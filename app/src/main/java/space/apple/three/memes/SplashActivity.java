@@ -38,7 +38,7 @@ public class SplashActivity extends AppCompatActivity {
 
     public static ArrayList<String> valueList;
     public static ArrayList<String> keyList;
-//    HashMap<String, String> urls;
+    public static HashMap<String, String> urls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +46,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         progressBar2 = findViewById(R.id.progressBar2);
+        urls = new HashMap<>();
         // Write a message to the database
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("MemesUrls");
@@ -69,6 +70,7 @@ public class SplashActivity extends AppCompatActivity {
                     HashMap<String, String> temp= (HashMap<String, String>) dataSnapshot.getValue();
                     temp.remove("\"6\"");
 
+                    urls = temp;
 
 /*
                     TreeMap<String,String> tm = new TreeMap<String, String>(temp);

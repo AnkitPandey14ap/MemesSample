@@ -48,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
         keyList =splashActivity.keyList;
 
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter=new MyAdapter(valueList,keyList,MainActivity.this);
+//        mAdapter=new MyAdapter(valueList,keyList,MainActivity.this);
+        mAdapter=new MyAdapter(splashActivity.urls,keyList,MainActivity.this);
         mRecyclerView.setAdapter(mAdapter);
 
         //ask permission if already not granted

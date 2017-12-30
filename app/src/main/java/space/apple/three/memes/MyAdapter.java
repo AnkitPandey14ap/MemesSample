@@ -18,17 +18,19 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private Context context;
-    private ArrayList<String> mDataset;
+//    private ArrayList<String> mDataset;
+    private HashMap<String,String> mDataset;
     private ArrayList<String> keyList;
     private LayoutInflater layoutInflater;
 
     DownloadManager downloadManager;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(ArrayList<String> myDataset,ArrayList<String> keyList, Context context) {
+    public MyAdapter(HashMap<String, String> myDataset, ArrayList<String> keyList, Context context) {
         layoutInflater = LayoutInflater.from(context);
         mDataset = myDataset;
         this.context = context;
@@ -55,7 +57,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         holder.idTV.setText("Ref: #"+keyList.get(position));
         Picasso.with(context)
-                .load(mDataset.get(position))
+                .load(mDataset.get(keyList.get(position)))
                 .into(holder.mImageView);
 
         holder.downloadAction.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +69,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                 Long refrence = downloadManager.enqueue(request);
 */
-                file_download(mDataset.get(position));
+//                file_download(mDataset.get(position));
+                file_download(mDataset.get(keyList.get(position)));
 
             }
         });
