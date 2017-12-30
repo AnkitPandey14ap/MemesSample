@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.nfc.FormatException;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -83,7 +86,27 @@ public class SplashActivity extends AppCompatActivity {
                     valueList = new ArrayList<String>(temp.values());
                     keyList = new ArrayList<String>(temp.keySet());
 
+                    Collections.sort(keyList);
 
+                    Collections.sort(keyList, new Comparator<String>() {
+                        @Override
+                        public int compare(String product, String t1) {
+
+                            if(Integer.parseInt(product)>=Integer.parseInt(t1)){
+                                return -1;
+                            }
+
+                            return 1;
+                            //return String.valueOf(product).compareTo(String.valueOf(t1));
+                        }
+                    });
+                    Log.i(TAG, "onDataChange: "+keyList);
+
+/*
+                    for (String i:keyList) {
+
+                    }
+*/
 
 
                     startActivity(new Intent(SplashActivity.this,MainActivity.class));
