@@ -1,10 +1,15 @@
 package space.apple.three.memes;
 
+import android.*;
+import android.Manifest;
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +54,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 //        holder.mImageView.setImageBitmap(BitmapFactory.decodeFile(mDataset.get(position)));
@@ -63,13 +68,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.downloadAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*downloadManager=(DownloadManager)context.getSystemService(Context.DOWNLOAD_SERVICE);
-                Uri uri = Uri.parse(mDataset.get(position));
-                DownloadManager.Request request = new DownloadManager.Request(uri);
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                Long refrence = downloadManager.enqueue(request);
-*/
-//                file_download(mDataset.get(position));
+
+                if (ActivityCompat.checkSelfPermission(context,Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+
+                    Toast.makeText(context, "Permission issue.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 file_download(mDataset.get(keyList.get(position)));
 
             }
@@ -79,7 +84,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(context,FullSizeImage.class);
-                intent.putExtra("URL", mDataset.get(position));
+                intent.putExtra("URL", mDataset.get(keyList.get(position)));
                 context.startActivity(intent);
             }
         });

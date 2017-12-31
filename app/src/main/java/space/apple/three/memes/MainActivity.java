@@ -19,6 +19,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import static space.apple.three.memes.SplashActivity.keyList;
+import static space.apple.three.memes.SplashActivity.urls;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "Ankit";
@@ -26,10 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayoutManager mLayoutManager;
     RecyclerView.Adapter mAdapter;
 
-    private ArrayList<String> valueList;
-    private ArrayList<String> keyList;
     private ShareActionProvider mShareActionProvider;
-//    HashMap<String, String> urls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,16 +40,10 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
 
-        valueList = new ArrayList<String>();
-        keyList = new ArrayList<String>();
-
         SplashActivity splashActivity = new SplashActivity();
-        valueList =splashActivity.valueList;
-        keyList =splashActivity.keyList;
 
         mRecyclerView.setLayoutManager(mLayoutManager);
-//        mAdapter=new MyAdapter(valueList,keyList,MainActivity.this);
-        mAdapter=new MyAdapter(splashActivity.urls,keyList,MainActivity.this);
+        mAdapter=new MyAdapter(urls,keyList,MainActivity.this);
         mRecyclerView.setAdapter(mAdapter);
 
         //ask permission if already not granted

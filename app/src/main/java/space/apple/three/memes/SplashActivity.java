@@ -36,7 +36,6 @@ public class SplashActivity extends AppCompatActivity {
 
     private ProgressBar progressBar2;
 
-    public static ArrayList<String> valueList;
     public static ArrayList<String> keyList;
     public static HashMap<String, String> urls;
 
@@ -47,6 +46,7 @@ public class SplashActivity extends AppCompatActivity {
 
         progressBar2 = findViewById(R.id.progressBar2);
         urls = new HashMap<>();
+
         // Write a message to the database
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("MemesUrls");
@@ -68,48 +68,24 @@ public class SplashActivity extends AppCompatActivity {
                     // This method is called once with the initial value and again
                     // whenever data at this location is updated.
                     HashMap<String, String> temp= (HashMap<String, String>) dataSnapshot.getValue();
+
+                    //ref #6 key is a string "6" so it might create error so just remove it from the list
                     temp.remove("\"6\"");
 
                     urls = temp;
-
-/*
-                    TreeMap<String,String> tm = new TreeMap<String, String>(temp);
-
-                    Set set2 = tm.entrySet();
-                    Iterator it2 = set2.iterator();
-
-                    while(it2.hasNext()){
-                        Map.Entry me2 = (Map.Entry)it2.next();
-                        Log.i(TAG, " Key : "+me2.getKey()+" Value : "+me2.getValue()+" \n");
-                    }
-
-*/
-
-                    valueList = new ArrayList<String>(temp.values());
                     keyList = new ArrayList<String>(temp.keySet());
 
-                    Collections.sort(keyList);
+//                    Collections.sort(keyList);
 
                     Collections.sort(keyList, new Comparator<String>() {
                         @Override
                         public int compare(String product, String t1) {
-
                             if(Integer.parseInt(product)>=Integer.parseInt(t1)){
                                 return -1;
                             }
-
                             return 1;
-                            //return String.valueOf(product).compareTo(String.valueOf(t1));
                         }
                     });
-                    Log.i(TAG, "onDataChange: "+keyList);
-
-/*
-                    for (String i:keyList) {
-
-                    }
-*/
-
 
                     startActivity(new Intent(SplashActivity.this,MainActivity.class));
                     finish();
@@ -153,10 +129,7 @@ public class SplashActivity extends AppCompatActivity {
 
             AlertDialog dialog = builder.create();
             dialog.show();
-
         }
-
-
 
     }
 
@@ -166,16 +139,5 @@ public class SplashActivity extends AppCompatActivity {
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
-    void sortMapByKey(HashMap<String,String> map){
-        TreeMap<String,String> mapSorted = new TreeMap<String, String>(map);
-
-
-//        mapSorted.forEach((key,value));
-
-        /*mapSorted.forEach((key, value) -> {
-            System.out.println(key + ", " + value);
-        });*/
     }
 }
