@@ -39,6 +39,7 @@ public class SplashActivity extends AppCompatActivity {
     public static ArrayList<String> keyList;
     public static HashMap<String, String> urls;
 
+    private boolean isDataFetched=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,9 +88,12 @@ public class SplashActivity extends AppCompatActivity {
                         }
                     });
 
-                    startActivity(new Intent(SplashActivity.this,MainActivity.class));
-                    finish();
+                    if(!isDataFetched){
+                        isDataFetched = true;
+                        startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                        finish();
 
+                    }
                 }
 
                 @Override
