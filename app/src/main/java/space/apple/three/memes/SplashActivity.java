@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+
 public class SplashActivity extends AppCompatActivity {
 
     private static final String TAG = "Ankit";
@@ -46,7 +47,17 @@ public class SplashActivity extends AppCompatActivity {
         myRef = database.getReference("MemesUrls");
 
 
+/*
+        MemeData memeData=new MemeData();
+        memeData.getData();
 
+        if(!isDataFetched){
+            isDataFetched = true;
+            startActivity(new Intent(SplashActivity.this,MainActivity.class));
+            finish();
+
+        }
+*/
 
         fetchData();
     }
@@ -64,7 +75,7 @@ public class SplashActivity extends AppCompatActivity {
                     HashMap<String, String> temp= (HashMap<String, String>) dataSnapshot.getValue();
 
                     //ref #6 key is a string "6" so it might create error so just remove it from the list
-                    temp.remove("\"6\"");
+                    temp.remove("\"1\"");
 
                     urls = temp;
                     keyList = new ArrayList<String>(temp.keySet());
