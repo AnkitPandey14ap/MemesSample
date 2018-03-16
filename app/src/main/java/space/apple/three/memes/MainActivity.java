@@ -1,11 +1,12 @@
 package space.apple.three.memes;
 
-import android.*;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,10 +15,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-
-import java.util.ArrayList;
 
 import static space.apple.three.memes.SplashActivity.keyList;
 import static space.apple.three.memes.SplashActivity.urls;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ShareActionProvider mShareActionProvider;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,11 +42,14 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
 
-        SplashActivity splashActivity = new SplashActivity();
+
+
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter=new MyAdapter(urls,keyList,MainActivity.this);
         mRecyclerView.setAdapter(mAdapter);
+
+
 
         //ask permission if already not granted
         if(ActivityCompat.checkSelfPermission(this,
@@ -54,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     1);
         }
+
 
 
     }
@@ -105,4 +111,5 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 }

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8sp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#87ceeb
 ">
 
@@ -22,29 +21,53 @@
 
     </android.support.v7.widget.CardView>
 
-    <TextView
-        android:id="@+id/idTV"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Refrence"
-        android:layout_marginTop="8sp"
-        android:layout_marginLeft="8sp"
-        android:layout_marginBottom="16sp"
-        android:textColor="#ffffff"
         android:layout_below="@+id/card_view"
-        android:textAppearance="?android:attr/textAppearanceMedium"/>
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_marginBottom="16dp">
 
-    <ImageView
-        android:id="@+id/downloadAction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        <TextView
+            android:id="@+id/idTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Refrence"
+            android:layout_marginBottom="16sp"
+            android:textColor="#ffffff"
+            android:layout_centerInParent="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/card_view"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:src="@mipmap/ic_download" />
+
+
+        <com.varunest.sparkbutton.SparkButton
+            android:id="@+id/spark_button"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:sparkbutton_activeImage="@drawable/like_star"
+            app:sparkbutton_inActiveImage="@drawable/unlike_star"
+            app:sparkbutton_iconSize="25dp"
+            app:sparkbutton_primaryColor="@color/primary_color"
+            app:sparkbutton_secondaryColor="@color/secondary_color"
+
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+
+            />
+
+
+        <ImageView
+            android:id="@+id/downloadAction"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/download_icon"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:layout_centerInParent="true"
+            />
+
+    </RelativeLayout>
 
 
 </RelativeLayout>

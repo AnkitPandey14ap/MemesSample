@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,6 +21,8 @@ import android.widget.Toast;
 
 
 import com.squareup.picasso.Picasso;
+import com.varunest.sparkbutton.SparkButton;
+import com.varunest.sparkbutton.SparkEventListener;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -89,6 +92,30 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             }
         });
 
+        holder.sparkButton.setEventListener(new SparkEventListener() {
+            @Override
+            public void onEvent(ImageView button, boolean buttonState) {
+                if (buttonState) {
+                    // Button is active
+                    Snackbar snackbar = Snackbar.make(button, "liked", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                } else {
+                    // Button is inactive
+                    Snackbar snackbar = Snackbar.make(button, "dislike", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
+            }
+
+            @Override
+            public void onEventAnimationEnd(ImageView button, boolean buttonState) {
+
+            }
+
+            @Override
+            public void onEventAnimationStart(ImageView button, boolean buttonState) {
+
+            }
+        });
 
 
 //        Picasso.with(context).load(mDataset.get(position)).into(holder.mImageView);
@@ -105,12 +132,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public SquareImageView mImageView;
         public TextView idTV;
         public ImageView downloadAction;
+
+        public SparkButton sparkButton;
+
+
         public ViewHolder(View itemView) {
             super(itemView);
             mImageView = (SquareImageView) itemView.findViewById(R.id.imageView);
             idTV =  itemView.findViewById(R.id.idTV);
 
             downloadAction = itemView.findViewById(R.id.downloadAction);
+            sparkButton = itemView.findViewById(R.id.spark_button);
+            sparkButton.setChecked(false);
+
+
         }
     }
 
