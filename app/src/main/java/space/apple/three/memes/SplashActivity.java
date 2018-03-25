@@ -22,6 +22,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
+import space.apple.three.memes.firebasedata.MemeData;
+import space.apple.three.memes.model.Meme;
+
 public class SplashActivity extends AppCompatActivity {
 
     private static final String TAG = "Ankit";
@@ -31,7 +34,7 @@ public class SplashActivity extends AppCompatActivity {
     private ProgressBar progressBar2;
 
     public static ArrayList<String> keyList;
-    public static HashMap<String, String> urls;
+    public static ArrayList<Meme> urls;
 
     private boolean isDataFetched=false;
     @Override
@@ -40,29 +43,22 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         progressBar2 = findViewById(R.id.progressBar2);
-        urls = new HashMap<>();
+        urls = new ArrayList<>();
 
         // Write a message to the database
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("MemesUrls");
 
-
-/*
-        MemeData memeData=new MemeData();
-        memeData.getData();
-
-        if(!isDataFetched){
-            isDataFetched = true;
-            startActivity(new Intent(SplashActivity.this,MainActivity.class));
-            finish();
-
+        if(isNetworkAvailable()){
+            MemeData memeData=new MemeData();
+            urls=memeData.getData();
         }
-*/
 
-        fetchData();
+
+//        fetchData();
     }
 
-    private void fetchData() {
+    /*private void fetchData() {
         if(isNetworkAvailable()){
 
             progressBar2.setVisibility(View.VISIBLE);
@@ -72,7 +68,7 @@ public class SplashActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     // This method is called once with the initial value and again
                     // whenever data at this location is updated.
-                    HashMap<String, String> temp= (HashMap<String, String>) dataSnapshot.getValue();
+                    HashMap<String, Meme> temp= (HashMap<String, Meme>) dataSnapshot.getValue();
 
                     //ref #6 key is a string "6" so it might create error so just remove it from the list
                     temp.remove("\"1\"");
@@ -140,7 +136,7 @@ public class SplashActivity extends AppCompatActivity {
         }
 
     }
-
+*/
 
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager

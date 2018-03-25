@@ -28,17 +28,19 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import space.apple.three.memes.model.Meme;
+
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private Context context;
-//    private ArrayList<String> mDataset;
-    private HashMap<String,String> mDataset;
+    private ArrayList<Meme> mDataset;
+//    private HashMap<String,Meme> mDataset;
     private ArrayList<String> keyList;
     private LayoutInflater layoutInflater;
 
     DownloadManager downloadManager;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(HashMap<String, String> myDataset, ArrayList<String> keyList, Context context) {
+    public MyAdapter(ArrayList<Meme> myDataset, ArrayList<String> keyList, Context context) {
         layoutInflater = LayoutInflater.from(context);
         mDataset = myDataset;
         this.context = context;
@@ -65,7 +67,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         holder.idTV.setText("Ref: #"+keyList.get(position));
         Picasso.with(context)
-                .load(mDataset.get(keyList.get(position)))
+                .load(mDataset.get(position).getUrl())
                 .into(holder.mImageView);
 
         holder.downloadAction.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +80,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                     Toast.makeText(context, "Permission issue.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                file_download(mDataset.get(keyList.get(position)));
+                file_download(mDataset.get(position).getUrl());
 
             }
         });
@@ -87,7 +89,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(context,FullSizeImage.class);
-                intent.putExtra("URL", mDataset.get(keyList.get(position)));
+                intent.putExtra("URL", mDataset.get(position).getUrl());
                 context.startActivity(intent);
             }
         });
