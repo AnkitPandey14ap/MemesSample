@@ -65,7 +65,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 //        holder.mImageView.setImageBitmap(BitmapFactory.decodeFile(mDataset.get(position)));
 
 
-        holder.idTV.setText("Ref: #"+keyList.get(position));
+        holder.idTV.setText("Ref: #"+position);
         Picasso.with(context)
                 .load(mDataset.get(position).getUrl())
                 .into(holder.mImageView);

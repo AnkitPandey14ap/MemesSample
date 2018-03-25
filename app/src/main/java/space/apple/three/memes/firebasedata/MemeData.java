@@ -1,5 +1,8 @@
 package space.apple.three.memes.firebasedata;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -12,8 +15,6 @@ import java.util.ArrayList;
 
 import space.apple.three.memes.model.Meme;
 
-import static android.content.ContentValues.TAG;
-
 /**
  * Created by ankit on 16/3/18.
  */
@@ -23,35 +24,24 @@ public class MemeData {
     DatabaseReference myRef;
 
     ArrayList<Meme> arrayList = new ArrayList<>();
+    private boolean isDataFetched=false;
+    private Context context;
+    private String TAG="Ankit";
 
-    public MemeData(){
+
+    public MemeData(Context context){
+        this.context = context;
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("MemesUrls");
+        myRef = database.getReference("memesUrl");
 
     }
 
-    public ArrayList<Meme> getData() {
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+    public boolean isDataFetched() {
 
+        return isDataFetched;
+    }
 
-//                HashMap<String, String> temp = (HashMap<String, String>) dataSnapshot.getValue();
-
-                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-
-                for (DataSnapshot child:children) {
-                    Meme meme = child.getValue(Meme.class);
-                    arrayList.add(meme);
-                    //Log.i(TAG, "onDataChange: "+child);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+    public ArrayList<Meme> getData(){
         return arrayList;
     }
 

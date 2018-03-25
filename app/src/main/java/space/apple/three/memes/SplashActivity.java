@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -18,9 +19,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 
 import space.apple.three.memes.firebasedata.MemeData;
 import space.apple.three.memes.model.Meme;
@@ -34,28 +32,90 @@ public class SplashActivity extends AppCompatActivity {
     private ProgressBar progressBar2;
 
     public static ArrayList<String> keyList;
-    public static ArrayList<Meme> urls;
+    public static ArrayList<Meme> urls = new ArrayList<>();
 
     private boolean isDataFetched=false;
+    private MemeData memeData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
         progressBar2 = findViewById(R.id.progressBar2);
-        urls = new ArrayList<>();
 
         // Write a message to the database
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("MemesUrls");
+        myRef = database.getReference("memesUrl");
+        MemeData memeData = new MemeData(this);
 
         if(isNetworkAvailable()){
-            MemeData memeData=new MemeData();
-            urls=memeData.getData();
+            fetchData();
+
+            /*
+            if(memeData.isDataFetched()){
+                urls=memeData.getData();
+                memeData.getData();
+                Log.i(TAG, "onCreate: ");
+                startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                finish();
+            }*/
         }
 
 
-//        fetchData();
+
+    }
+
+    private void fetchData() {
+        progressBar2.setVisibility(View.VISIBLE);
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.i(TAG, "onDataChange: ");
+                try{
+
+                    Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                    for (DataSnapshot child:children) {
+                        Meme meme = child.getValue(Meme.class);
+                        urls.add(new Meme(meme.getUrl(),meme.getLike()));
+                    }
+
+                    if(urls.size()!=0){
+
+                        isDataFetched = true;
+                        startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                        finish();
+
+                    }
+
+
+                }catch (Exception e){
+                    Log.i(TAG, "onDataChange: Exception"+e );
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Failed to read value
+                Log.i(TAG, "onCancelled: ");
+                progressBar2.setVisibility(View.GONE);
+                AlertDialog.Builder builder = new AlertDialog.Builder(SplashActivity.this);
+                builder.setTitle("ERROR")
+                        .setMessage("Something went wrong")
+                        .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                fetchData();
+                            }
+                        });
+
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+            }
+        });
     }
 
     /*private void fetchData() {
@@ -99,7 +159,6 @@ public class SplashActivity extends AppCompatActivity {
                 @Override
                 public void onCancelled(DatabaseError error) {
                     // Failed to read value
-                    progressBar2.setVisibility(View.GONE);
                     AlertDialog.Builder builder = new AlertDialog.Builder(SplashActivity.this);
                     builder.setTitle("ERROR")
                             .setMessage("Something went wrong")
