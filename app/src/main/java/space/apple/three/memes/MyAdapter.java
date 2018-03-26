@@ -1,6 +1,5 @@
 package space.apple.three.memes;
 
-import android.*;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DownloadManager;
@@ -26,14 +25,12 @@ import com.varunest.sparkbutton.SparkEventListener;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import space.apple.three.memes.model.Meme;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private Context context;
-    private ArrayList<Meme> mDataset;
-//    private HashMap<String,Meme> mDataset;
+    private ArrayList<Meme> urls;
     private ArrayList<String> keyList;
     private LayoutInflater layoutInflater;
 
@@ -42,7 +39,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     // Provide a suitable constructor (depends on the kind of dataset)
     public MyAdapter(ArrayList<Meme> myDataset, ArrayList<String> keyList, Context context) {
         layoutInflater = LayoutInflater.from(context);
-        mDataset = myDataset;
+        urls = myDataset;
         this.context = context;
         this.keyList = keyList;
     }
@@ -62,12 +59,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-//        holder.mImageView.setImageBitmap(BitmapFactory.decodeFile(mDataset.get(position)));
+//        holder.mImageView.setImageBitmap(BitmapFactory.decodeFile(urls.get(position)));
 
 
-        holder.idTV.setText("Ref: #"+position);
+        SharedPref sp = new SharedPref(context);
+        if(sp.isLiked(urls.get(position).getRef())){
+            holder.likeButton.setChecked(true);
+        }
+
+        holder.idTV.setText("Ref: #"+urls.get(position).getRef());
         Picasso.with(context)
-                .load(mDataset.get(position).getUrl())
+                .load(urls.get(position).getUrl())
                 .into(holder.mImageView);
 
         holder.downloadAction.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +82,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                     Toast.makeText(context, "Permission issue.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                file_download(mDataset.get(position).getUrl());
+                file_download(urls.get(position).getUrl());
 
             }
         });
@@ -89,20 +91,26 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(context,FullSizeImage.class);
-                intent.putExtra("URL", mDataset.get(position).getUrl());
+                intent.putExtra("URL", urls.get(position).getUrl());
                 context.startActivity(intent);
             }
         });
 
-        holder.sparkButton.setEventListener(new SparkEventListener() {
+        holder.likeButton.setEventListener(new SparkEventListener() {
             @Override
             public void onEvent(ImageView button, boolean buttonState) {
                 if (buttonState) {
                     // Button is active
+                    SharedPref sp = new SharedPref(context);
+                    sp.saveLike(urls.get(position).getRef());
+
                     Snackbar snackbar = Snackbar.make(button, "liked", Snackbar.LENGTH_LONG);
                     snackbar.show();
                 } else {
                     // Button is inactive
+                    SharedPref sp = new SharedPref(context);
+                    sp.saveDislike(urls.get(position).getRef());
+
                     Snackbar snackbar = Snackbar.make(button, "dislike", Snackbar.LENGTH_LONG);
                     snackbar.show();
                 }
@@ -120,13 +128,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         });
 
 
-//        Picasso.with(context).load(mDataset.get(position)).into(holder.mImageView);
+//        Picasso.with(context).load(urls.get(position)).into(holder.mImageView);
     }
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return urls.size();
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -135,7 +149,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public TextView idTV;
         public ImageView downloadAction;
 
-        public SparkButton sparkButton;
+        public SparkButton likeButton;
 
 
         public ViewHolder(View itemView) {
@@ -144,8 +158,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             idTV =  itemView.findViewById(R.id.idTV);
 
             downloadAction = itemView.findViewById(R.id.downloadAction);
-            sparkButton = itemView.findViewById(R.id.spark_button);
-            sparkButton.setChecked(false);
+            likeButton = itemView.findViewById(R.id.spark_button);
+
+            likeButton.setChecked(false);
 
 
         }

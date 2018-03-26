@@ -7,10 +7,21 @@ package space.apple.three.memes.model;
 public class Meme {
     private String url;
     private String like;
+    private String ref;
 
-    public Meme(String url, String like) {
+
+    public String getRef() {
+        return ref;
+    }
+
+    public void setRef(String ref) {
+        this.ref = ref;
+    }
+
+    public Meme(String url, String like, String ref) {
         this.url = url;
         this.like = like;
+        this.ref = ref;
     }
 
     public Meme() {

@@ -19,8 +19,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
-import space.apple.three.memes.firebasedata.MemeData;
 import space.apple.three.memes.model.Meme;
 
 public class SplashActivity extends AppCompatActivity {
@@ -35,7 +36,6 @@ public class SplashActivity extends AppCompatActivity {
     public static ArrayList<Meme> urls = new ArrayList<>();
 
     private boolean isDataFetched=false;
-    private MemeData memeData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class SplashActivity extends AppCompatActivity {
         // Write a message to the database
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("memesUrl");
-        MemeData memeData = new MemeData(this);
+
 
         if(isNetworkAvailable()){
             fetchData();
@@ -73,26 +73,33 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.i(TAG, "onDataChange: ");
-                try{
-
+                    urls.clear();
                     Iterable<DataSnapshot> children = dataSnapshot.getChildren();
                     for (DataSnapshot child:children) {
                         Meme meme = child.getValue(Meme.class);
-                        urls.add(new Meme(meme.getUrl(),meme.getLike()));
+                        urls.add(new Meme(meme.getUrl(),meme.getLike(),meme.getRef()));
+
                     }
 
+             /*       Collections.sort(keyList, new Comparator<String>() {
+                        @Override
+                        public int compare(String product, String t1) {
+                            if(Integer.parseInt(product)>=Integer.parseInt(t1)){
+                                return -1;
+                            }
+                            return 1;
+                        }
+                    });
+*/
                     if(urls.size()!=0){
-
-                        isDataFetched = true;
+                        Collections.reverse(urls);
                         startActivity(new Intent(SplashActivity.this,MainActivity.class));
                         finish();
 
                     }
 
 
-                }catch (Exception e){
-                    Log.i(TAG, "onDataChange: Exception"+e );
-                }
+
             }
 
             @Override
