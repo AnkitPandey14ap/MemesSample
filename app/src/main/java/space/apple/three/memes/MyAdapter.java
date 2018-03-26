@@ -95,6 +95,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 context.startActivity(intent);
             }
         });
+        holder.likeCount.setText("("+urls.get(position).getLike()+")");
 
         holder.likeButton.setEventListener(new SparkEventListener() {
             @Override
@@ -105,6 +106,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                     sp.saveLike(urls.get(position).getRef());
 
                     new DataManager(context,urls.get(position)).increaseLike();
+                    int like = Integer.parseInt(urls.get(position).getLike())+1;
+                    holder.likeCount.setText("("+String.valueOf(like)+")");
 
                     Snackbar snackbar = Snackbar.make(button, "liked", Snackbar.LENGTH_LONG);
                     snackbar.show();
@@ -113,7 +116,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                     SharedPref sp = new SharedPref(context);
                     sp.saveDislike(urls.get(position).getRef());
                     new DataManager(context,urls.get(position)).decreaseLike();
-
+                    int like = Integer.parseInt(urls.get(position).getLike());
+                    holder.likeCount.setText("("+String.valueOf(like)+")");
 
 
                     Snackbar snackbar = Snackbar.make(button, "dislike", Snackbar.LENGTH_LONG);
@@ -156,6 +160,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         public SparkButton likeButton;
 
+        public TextView likeCount;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -167,6 +173,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
             likeButton.setChecked(false);
 
+            likeCount = itemView.findViewById(R.id.likeCount);
 
         }
     }

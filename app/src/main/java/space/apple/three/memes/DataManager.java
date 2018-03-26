@@ -33,6 +33,26 @@ public class DataManager {
 
     }
 
+/*
+    int getLikeCount(){
+
+        final String[] c = new String[1];
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                c[0] = String.valueOf(dataSnapshot.getValue());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        return Integer.parseInt(c[0]);
+    }
+*/
+
     public void increaseLike(){
         myRef.addValueEventListener(new ValueEventListener() {
             @Override

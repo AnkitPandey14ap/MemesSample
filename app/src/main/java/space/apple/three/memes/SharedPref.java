@@ -10,34 +10,38 @@ import android.preference.PreferenceManager;
 
 public class SharedPref {
     Context context;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
     public SharedPref(Context context) {
         this.context = context;
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        editor = preferences.edit();
     }
 
     void saveLike(String ref) {
-
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(ref,true);
         editor.apply();
 
     }
     void saveDislike(String ref) {
-
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(ref,false);
         editor.apply();
 
     }
 
     boolean isLiked(String ref){
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         boolean flag= preferences.getBoolean(ref, false);
+        return flag;
+    }
 
+    void register(){
+        editor.putBoolean("REGISTER",true);
+        editor.apply();
+    }
+
+    boolean isRegistered(){
+        boolean flag= preferences.getBoolean("REGISTER", false);
         return flag;
     }
 
