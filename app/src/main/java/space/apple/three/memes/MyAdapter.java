@@ -104,12 +104,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                     SharedPref sp = new SharedPref(context);
                     sp.saveLike(urls.get(position).getRef());
 
+                    new DataManager(context,urls.get(position)).increaseLike();
+
                     Snackbar snackbar = Snackbar.make(button, "liked", Snackbar.LENGTH_LONG);
                     snackbar.show();
                 } else {
                     // Button is inactive
                     SharedPref sp = new SharedPref(context);
                     sp.saveDislike(urls.get(position).getRef());
+                    new DataManager(context,urls.get(position)).decreaseLike();
+
+
 
                     Snackbar snackbar = Snackbar.make(button, "dislike", Snackbar.LENGTH_LONG);
                     snackbar.show();

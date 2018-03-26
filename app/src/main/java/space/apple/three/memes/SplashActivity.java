@@ -20,7 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
+
 
 import space.apple.three.memes.model.Meme;
 
@@ -36,6 +36,7 @@ public class SplashActivity extends AppCompatActivity {
     public static ArrayList<Meme> urls = new ArrayList<>();
 
     private boolean isDataFetched=false;
+    private boolean readyToGo=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +53,6 @@ public class SplashActivity extends AppCompatActivity {
         if(isNetworkAvailable()){
             fetchData();
 
-            /*
-            if(memeData.isDataFetched()){
-                urls=memeData.getData();
-                memeData.getData();
-                Log.i(TAG, "onCreate: ");
-                startActivity(new Intent(SplashActivity.this,MainActivity.class));
-                finish();
-            }*/
         }
 
 
@@ -72,7 +65,7 @@ public class SplashActivity extends AppCompatActivity {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i(TAG, "onDataChange: ");
+                Log.i(TAG, "onDataChange: splash");
                     urls.clear();
                     Iterable<DataSnapshot> children = dataSnapshot.getChildren();
                     for (DataSnapshot child:children) {
@@ -81,20 +74,16 @@ public class SplashActivity extends AppCompatActivity {
 
                     }
 
-             /*       Collections.sort(keyList, new Comparator<String>() {
-                        @Override
-                        public int compare(String product, String t1) {
-                            if(Integer.parseInt(product)>=Integer.parseInt(t1)){
-                                return -1;
-                            }
-                            return 1;
-                        }
-                    });
-*/
+
                     if(urls.size()!=0){
                         Collections.reverse(urls);
-                        startActivity(new Intent(SplashActivity.this,MainActivity.class));
-                        finish();
+                        if(readyToGo){
+                            readyToGo= false;
+
+                            myRef.removeEventListener(this);
+                            startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                            finish();
+                        }
 
                     }
 
@@ -123,6 +112,9 @@ public class SplashActivity extends AppCompatActivity {
 
             }
         });
+
+
+
     }
 
     /*private void fetchData() {
