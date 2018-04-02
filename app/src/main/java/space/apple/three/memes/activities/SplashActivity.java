@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
+import space.apple.three.memes.NavigationActivity;
 import space.apple.three.memes.R;
 import space.apple.three.memes.data_manager.SharedPref;
 import space.apple.three.memes.model.Meme;
@@ -126,7 +127,7 @@ public class SplashActivity extends AppCompatActivity {
                             readyToGo= false;
 
                             myRef.removeEventListener(this);
-                            startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                            startActivity(new Intent(SplashActivity.this,NavigationActivity.class));
                             finish();
                         }
 

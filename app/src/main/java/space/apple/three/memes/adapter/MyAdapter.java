@@ -30,6 +30,7 @@ import space.apple.three.memes.activities.FullSizeImage;
 import space.apple.three.memes.R;
 import space.apple.three.memes.data_manager.DataManager;
 import space.apple.three.memes.data_manager.SharedPref;
+import space.apple.three.memes.extra.RowPostion;
 import space.apple.three.memes.model.Meme;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
@@ -75,6 +76,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         Picasso.with(context)
                 .load(urls.get(position).getUrl())
                 .into(holder.mImageView);
+        RowPostion.pos = position;
 
         holder.downloadAction.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,7 +200,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         Uri downloadUri = Uri.parse(uRl);
         DownloadManager.Request request = new DownloadManager.Request(
                 downloadUri);
-        
+
         request.setAllowedNetworkTypes(
                 DownloadManager.Request.NETWORK_WIFI
                         | DownloadManager.Request.NETWORK_MOBILE)
@@ -209,4 +211,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         mgr.enqueue(request);
 
     }
+
+
+
+
 }
