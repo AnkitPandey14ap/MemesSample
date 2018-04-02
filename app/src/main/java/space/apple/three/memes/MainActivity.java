@@ -11,8 +11,10 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ShareActionProvider;
+import android.support.v7.widget.SnapHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,8 +41,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mRecyclerView = findViewById(R.id.recycler_view);
+        SnapHelper snapHelper=new PagerSnapHelper();
+        snapHelper.attachToRecyclerView(mRecyclerView);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter=new MyAdapter(urls,keyList,MainActivity.this);
