@@ -1,12 +1,10 @@
-package space.apple.three.memes;
+package space.apple.three.memes.activities;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,13 +15,14 @@ import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.SnapHelper;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 
-import static space.apple.three.memes.SplashActivity.keyList;
-import static space.apple.three.memes.SplashActivity.urls;
+import space.apple.three.memes.adapter.MyAdapter;
+import space.apple.three.memes.R;
+
+import static space.apple.three.memes.activities.SplashActivity.keyList;
+import static space.apple.three.memes.activities.SplashActivity.urls;
 
 public class MainActivity extends AppCompatActivity {
 

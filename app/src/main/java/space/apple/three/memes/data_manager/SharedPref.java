@@ -1,4 +1,4 @@
-package space.apple.three.memes;
+package space.apple.three.memes.data_manager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,28 +19,28 @@ public class SharedPref {
         editor = preferences.edit();
     }
 
-    void saveLike(String ref) {
+    public void saveLike(String ref) {
         editor.putBoolean(ref,true);
         editor.apply();
 
     }
-    void saveDislike(String ref) {
+    public void saveDislike(String ref) {
         editor.putBoolean(ref,false);
         editor.apply();
 
     }
 
-    boolean isLiked(String ref){
+    public boolean isLiked(String ref){
         boolean flag= preferences.getBoolean(ref, false);
         return flag;
     }
 
-    void register(){
+    public void register(){
         editor.putBoolean("REGISTER",true);
         editor.apply();
     }
 
-    boolean isRegistered(){
+    public boolean isRegistered(){
         boolean flag= preferences.getBoolean("REGISTER", false);
         return flag;
     }

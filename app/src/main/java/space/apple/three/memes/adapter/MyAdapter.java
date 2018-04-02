@@ -1,4 +1,4 @@
-package space.apple.three.memes;
+package space.apple.three.memes.adapter;
 
 import android.Manifest;
 import android.app.Activity;
@@ -26,6 +26,10 @@ import com.varunest.sparkbutton.SparkEventListener;
 import java.io.File;
 import java.util.ArrayList;
 
+import space.apple.three.memes.activities.FullSizeImage;
+import space.apple.three.memes.R;
+import space.apple.three.memes.data_manager.DataManager;
+import space.apple.three.memes.data_manager.SharedPref;
 import space.apple.three.memes.model.Meme;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
@@ -109,8 +113,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                     int like = Integer.parseInt(urls.get(position).getLike())+1;
                     holder.likeCount.setText("("+String.valueOf(like)+")");
 
-                    Snackbar snackbar = Snackbar.make(button, "liked", Snackbar.LENGTH_LONG);
-                    snackbar.show();
+//                    Snackbar snackbar = Snackbar.make(button, "liked", Snackbar.LENGTH_LONG);
+//                    snackbar.show();
                 } else {
                     // Button is inactive
                     SharedPref sp = new SharedPref(context);
@@ -120,8 +124,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                     holder.likeCount.setText("("+String.valueOf(like)+")");
 
 
-                    Snackbar snackbar = Snackbar.make(button, "dislike", Snackbar.LENGTH_LONG);
-                    snackbar.show();
+//                    Snackbar snackbar = Snackbar.make(button, "dislike", Snackbar.LENGTH_LONG);
+//                    snackbar.show();
                 }
             }
 
@@ -154,7 +158,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a Image in this case
-        public SquareImageView mImageView;
+//        public SquareImageView mImageView;
+        public ImageView mImageView;
         public TextView idTV;
         public ImageView downloadAction;
 
@@ -165,7 +170,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mImageView = (SquareImageView) itemView.findViewById(R.id.imageView);
+//            mImageView = (SquareImageView) itemView.findViewById(R.id.imageView);
+            mImageView = (ImageView) itemView.findViewById(R.id.imageView);
             idTV =  itemView.findViewById(R.id.idTV);
 
             downloadAction = itemView.findViewById(R.id.downloadAction);

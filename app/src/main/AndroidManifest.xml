@@ -11,9 +11,9 @@
         android:icon="@mipmap/ic_memes_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".activities.MainActivity"></activity>
         <activity
-            android:name=".SplashActivity"
+            android:name=".activities.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,17 +22,17 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".FullSizeImage"
+        <activity android:name=".activities.FullSizeImage"
             android:theme="@style/SplashTheme">
         </activity>
 
-        <service android:name=".MyFirebaseMessagingService">
+        <service android:name=".push_notification.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
 
-        <service android:name=".FirebaseIDService">
+        <service android:name=".push_notification.FirebaseIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>

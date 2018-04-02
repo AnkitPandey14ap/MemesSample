@@ -1,4 +1,4 @@
-package space.apple.three.memes;
+package space.apple.three.memes.data_manager;
 
 import android.content.Context;
 import android.util.Log;
