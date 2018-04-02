@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "space.apple.three.memes"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 6
         versionName "1.0.5"
@@ -35,6 +35,8 @@ dependencies {
     compile 'com.android.support:design:26.1.0'
 
     compile 'com.github.varunest:sparkbutton:1.0.5'
+
+    compile 'com.jsibbold:zoomage:1.1.0'
 
 }
 

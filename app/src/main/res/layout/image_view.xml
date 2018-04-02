@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
     android:background="@color/colorPrimary">
 
 
@@ -11,12 +12,11 @@
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:elevation="16dp"
         android:layout_margin="8dp"
-
         app:cardCornerRadius="16dp"
-        android:layout_above="@+id/relativeLayout">
+        android:layout_above="@+id/relativeLayout"
+        card_view:cardUseCompatPadding="true">
         <ImageView
             android:id="@+id/imageView"
             android:scaleType="fitStart"

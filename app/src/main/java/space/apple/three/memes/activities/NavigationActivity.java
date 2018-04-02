@@ -1,9 +1,10 @@
-package space.apple.three.memes;
+package space.apple.three.memes.activities;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -13,6 +14,7 @@ import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.SnapHelper;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,9 +24,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import java.util.ArrayList;
+
+import space.apple.three.memes.R;
 import space.apple.three.memes.adapter.MyAdapter;
-import space.apple.three.memes.extra.RowPostion;
+import space.apple.three.memes.data_manager.SharedPref;
+import space.apple.three.memes.model.Meme;
+import space.apple.three.memes.model.RowPostion;
 
 import static space.apple.three.memes.activities.SplashActivity.keyList;
 import static space.apple.three.memes.activities.SplashActivity.urls;
@@ -40,22 +49,20 @@ public class NavigationActivity extends AppCompatActivity
     Toolbar toolbar;
     private ShareActionProvider mShareActionProvider;
 
+    ArrayList<Meme> arrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("iMemes");
+
+//        toolbar.setLogo();
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Position"+ RowPostion.pos, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -67,6 +74,7 @@ public class NavigationActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //*******************************************************************
+        arrayList = urls;
         mRecyclerView = findViewById(R.id.recycler_view);
         SnapHelper snapHelper=new PagerSnapHelper();
         snapHelper.attachToRecyclerView(mRecyclerView);
@@ -75,8 +83,18 @@ public class NavigationActivity extends AppCompatActivity
 
 
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter=new MyAdapter(urls,keyList,NavigationActivity.this);
+        mAdapter=new MyAdapter(arrayList,keyList,NavigationActivity.this);
         mRecyclerView.setAdapter(mAdapter);
+
+
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRecyclerView.smoothScrollToPosition(0);
+            }
+        });
 
 
         //ask permission if already not granted
@@ -123,28 +141,6 @@ public class NavigationActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.navigation, menu);
-
-        MenuItem item = menu.findItem(R.id.shareButton);
-        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-        sharingIntent.setType("text/plain");
-        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Car Buddies");
-
-        String shareBody = "Hey,This is the best app for MEMES and TROLLS, " +
-                "install this app for all the latest MEMES and TROLS from facebook and Twitter \n\nAndroid\n";
-        shareBody= shareBody + "https://play.google.com/store/apps/details?id=space.apple.three.memes \n\n";
-
-        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-
-        //then set the sharingIntent
-        mShareActionProvider.setShareIntent(sharingIntent);
-
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -167,18 +163,79 @@ public class NavigationActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_favourite) {
+            RowPostion.pos=-1;
+            toolbar.setTitle("Favourite");
+            SharedPref sp = new SharedPref(this);
+            arrayList=new ArrayList<>();
+            for(int i=0;i<urls.size();i++){
+                Log.i(TAG, "onNavigationItemSelected: "+sp.isLiked(urls.get(i).getRef()));
+                if(sp.isLiked(urls.get(i).getRef())){
+                    arrayList.add(urls.get(i));
+                }
+            }
+
+                mRecyclerView = findViewById(R.id.recycler_view);
+            /*SnapHelper snapHelper=new PagerSnapHelper();
+            snapHelper.attachToRecyclerView(mRecyclerView);
+            */mRecyclerView.setHasFixedSize(true);
+                mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+
+
+                mRecyclerView.setLayoutManager(mLayoutManager);
+                mAdapter=new MyAdapter(arrayList,keyList,NavigationActivity.this);
+                mRecyclerView.setAdapter(mAdapter);
+
+
+
+
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_home) {
+            RowPostion.pos=-1;
+            toolbar.setTitle("iMemes");
 
-        } else if (id == R.id.nav_slideshow) {
+            arrayList = urls;
+            mRecyclerView = findViewById(R.id.recycler_view);
+            /*SnapHelper snapHelper=new PagerSnapHelper();
+            snapHelper.attachToRecyclerView(mRecyclerView);
+            */mRecyclerView.setHasFixedSize(true);
+            mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
 
-        } else if (id == R.id.nav_manage) {
+
+            mRecyclerView.setLayoutManager(mLayoutManager);
+            mAdapter=new MyAdapter(arrayList,keyList,NavigationActivity.this);
+            mRecyclerView.setAdapter(mAdapter);
 
         } else if (id == R.id.nav_share) {
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Car Buddies");
+
+            String shareBody = "Hey,This is the best app for MEMES and TROLLS, " +
+                    "install this app for all the latest MEMES and TROLS from facebook and Twitter \n\nAndroid\n";
+            shareBody= shareBody + "https://play.google.com/store/apps/details?id=space.apple.three.memes \n\n";
+
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+
+            //then set the sharingIntent
+//            mShareActionProvider.setShareIntent(sharingIntent);
+//            startActivity(Intent.CreateChooser(sharingIntent, "Test"));
+            startActivity(Intent.createChooser(sharingIntent,"Share iMemes"));
+
+
 
         } else if (id == R.id.nav_send) {
-
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType("message/rfc822");
+            i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"3applespace@gmail.com"});
+//        i.putExtra(Intent.EXTRA_EMAIL  , arrayList);
+            i.putExtra(Intent.EXTRA_SUBJECT, "iMemes Feedback");
+//            i.putExtra(Intent.EXTRA_TEXT   , feedbackEditText.getText().toString());
+            try {
+                startActivity(Intent.createChooser(i, "Send mail..."));
+            } catch (android.content.ActivityNotFoundException ex) {
+                Toast.makeText(NavigationActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

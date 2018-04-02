@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,7 +29,7 @@ import space.apple.three.memes.activities.FullSizeImage;
 import space.apple.three.memes.R;
 import space.apple.three.memes.data_manager.DataManager;
 import space.apple.three.memes.data_manager.SharedPref;
-import space.apple.three.memes.extra.RowPostion;
+import space.apple.three.memes.model.RowPostion;
 import space.apple.three.memes.model.Meme;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {

@@ -5,13 +5,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
+import com.jsibbold.zoomage.ZoomageView;
 import com.squareup.picasso.Picasso;
 
 import space.apple.three.memes.R;
 
 public class FullSizeImage extends AppCompatActivity {
 
-    ImageView fullImage;
+    ZoomageView fullImage;
 
 
     @Override

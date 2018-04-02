@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="space.apple.three.memes.NavigationActivity">
+    tools:context="space.apple.three.memes.activities.NavigationActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -16,7 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:logo="@mipmap/ic_memes_logo"/>
 
     </android.support.design.widget.AppBarLayout>
 
@@ -27,10 +28,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="72dp"
         android:layout_marginRight="16dp"
         app:rippleColor="#ffffff"
-        app:srcCompat="@drawable/forward_icon"
+        app:srcCompat="@drawable/icon_up"
         tools:ignore="VectorDrawableCompat" />
 
 </android.support.design.widget.CoordinatorLayout>

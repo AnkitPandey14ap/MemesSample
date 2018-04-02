@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-import space.apple.three.memes.NavigationActivity;
 import space.apple.three.memes.R;
 import space.apple.three.memes.data_manager.SharedPref;
 import space.apple.three.memes.model.Meme;
