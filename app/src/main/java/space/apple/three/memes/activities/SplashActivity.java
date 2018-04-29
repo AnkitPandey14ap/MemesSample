@@ -57,7 +57,14 @@ public class SplashActivity extends AppCompatActivity {
 
 
 
+        startDataFetching();
 
+
+
+
+    }
+
+    private void startDataFetching() {
         if(isNetworkAvailable()){
             final SharedPref sp = new SharedPref(this);
             if(!sp.isRegistered()){
@@ -98,9 +105,7 @@ public class SplashActivity extends AppCompatActivity {
             //fetch meme data now
             fetchData();
 
-        }
-
-
+        }else showNetworkErrorDialogue();
 
     }
 
@@ -140,20 +145,7 @@ public class SplashActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
                 // Failed to read value
                 Log.i(TAG, "onCancelled: ");
-                progressBar2.setVisibility(View.GONE);
-                AlertDialog.Builder builder = new AlertDialog.Builder(SplashActivity.this);
-                builder.setTitle("ERROR")
-                        .setMessage("Something went wrong")
-                        .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                fetchData();
-                            }
-                        });
-
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                showErrorDialogue();
 
             }
         });
@@ -162,6 +154,39 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
+    private void showErrorDialogue() {
+        progressBar2.setVisibility(View.GONE);
+        AlertDialog.Builder builder = new AlertDialog.Builder(SplashActivity.this);
+        builder.setTitle("ERROR")
+                .setMessage("Something went wrong")
+                .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        fetchData();
+                    }
+                });
+
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void showNetworkErrorDialogue() {
+        progressBar2.setVisibility(View.GONE);
+        AlertDialog.Builder builder = new AlertDialog.Builder(SplashActivity.this);
+        builder.setTitle("No Internet")
+                .setMessage("Check your internet connection.")
+                .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        startDataFetching();
+                    }
+                });
+
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 
 
     private boolean isNetworkAvailable() {

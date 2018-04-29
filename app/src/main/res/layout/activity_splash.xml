@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="@drawable/gradient_splash"
     tools:context="space.apple.three.memes.activities.SplashActivity">
 
     <ProgressBar

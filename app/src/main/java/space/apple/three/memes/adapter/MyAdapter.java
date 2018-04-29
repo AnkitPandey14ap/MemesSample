@@ -6,8 +6,11 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,6 +22,7 @@ import android.widget.Toast;
 
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import com.varunest.sparkbutton.SparkButton;
 import com.varunest.sparkbutton.SparkEventListener;
 
@@ -38,6 +42,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private ArrayList<String> keyList;
     private LayoutInflater layoutInflater;
 
+    String TAG = "Ankit";
     DownloadManager downloadManager;
 
     // Provide a suitable constructor (depends on the kind of dataset)
@@ -52,7 +57,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        View v =layoutInflater.inflate(R.layout.image_view, parent, false);
+        View v = layoutInflater.inflate(R.layout.image_view, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
         return vh;
@@ -67,11 +72,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
 
         SharedPref sp = new SharedPref(context);
-        if(sp.isLiked(urls.get(position).getRef())){
+        if (sp.isLiked(urls.get(position).getRef())) {
             holder.likeButton.setChecked(true);
         }
 
-        holder.idTV.setText("Ref: #"+urls.get(position).getRef());
+        holder.ivShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shareImage(position);
+            }
+        });
         Picasso.with(context)
                 .load(urls.get(position).getUrl())
                 .into(holder.mImageView);
@@ -81,12 +91,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
 
-                if (ActivityCompat.checkSelfPermission(context,Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
 
                     Toast.makeText(context, "Permission issue.", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+
+
+
                 file_download(urls.get(position).getUrl());
 
             }
@@ -95,12 +109,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(context,FullSizeImage.class);
+                Intent intent = new Intent(context, FullSizeImage.class);
                 intent.putExtra("URL", urls.get(position).getUrl());
                 context.startActivity(intent);
             }
         });
-        holder.likeCount.setText("("+urls.get(position).getLike()+")");
+        holder.likeCount.setText("(" + urls.get(position).getLike() + ")");
 
         holder.likeButton.setEventListener(new SparkEventListener() {
             @Override
@@ -110,9 +124,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                     SharedPref sp = new SharedPref(context);
                     sp.saveLike(urls.get(position).getRef());
 
-                    new DataManager(context,urls.get(position)).increaseLike();
-                    int like = Integer.parseInt(urls.get(position).getLike())+1;
-                    holder.likeCount.setText("("+String.valueOf(like)+")");
+                    new DataManager(context, urls.get(position)).increaseLike();
+                    int like = Integer.parseInt(urls.get(position).getLike()) + 1;
+                    holder.likeCount.setText("(" + String.valueOf(like) + ")");
 
 //                    Snackbar snackbar = Snackbar.make(button, "liked", Snackbar.LENGTH_LONG);
 //                    snackbar.show();
@@ -120,9 +134,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                     // Button is inactive
                     SharedPref sp = new SharedPref(context);
                     sp.saveDislike(urls.get(position).getRef());
-                    new DataManager(context,urls.get(position)).decreaseLike();
+                    new DataManager(context, urls.get(position)).decreaseLike();
                     int like = Integer.parseInt(urls.get(position).getLike());
-                    holder.likeCount.setText("("+String.valueOf(like)+")");
+                    holder.likeCount.setText("(" + String.valueOf(like) + ")");
 
 
 //                    Snackbar snackbar = Snackbar.make(button, "dislike", Snackbar.LENGTH_LONG);
@@ -144,6 +158,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
 //        Picasso.with(context).load(urls.get(position)).into(holder.mImageView);
     }
+
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
@@ -156,12 +171,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
 
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a Image in this case
 //        public SquareImageView mImageView;
         public ImageView mImageView;
-        public TextView idTV;
+        public ImageView ivShare;
         public ImageView downloadAction;
 
         public SparkButton likeButton;
@@ -173,7 +187,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             super(itemView);
 //            mImageView = (SquareImageView) itemView.findViewById(R.id.imageView);
             mImageView = (ImageView) itemView.findViewById(R.id.imageView);
-            idTV =  itemView.findViewById(R.id.idTV);
+            ivShare = itemView.findViewById(R.id.share_image_view);
 
             downloadAction = itemView.findViewById(R.id.downloadAction);
             likeButton = itemView.findViewById(R.id.spark_button);
@@ -212,6 +226,45 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
 
+    public void shareImage(int position){
+        Picasso.with(context)
+                .load(urls.get(position).getUrl())
+                .into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                        String shareBody = "For more funny Memes and Images download iMEMES android app ";
+                        shareBody= shareBody + "https://play.google.com/store/apps/details?id=space.apple.three.memes \n\n";
+
+
+
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.putExtra(Intent.EXTRA_TEXT, shareBody);
+
+                        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "", null);
+                        Uri screenshotUri = Uri.parse(path);
+
+
+
+                        intent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
+                        intent.setType("image/*");
+                        context.startActivity(Intent.createChooser(intent, "Share image via..."));
+
+
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Drawable errorDrawable) {
+
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                    }
+                });
+
+    }
 
 
 }
