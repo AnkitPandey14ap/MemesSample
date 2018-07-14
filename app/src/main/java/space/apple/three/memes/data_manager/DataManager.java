@@ -11,8 +11,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import space.apple.three.memes.model.Meme;
 
-import static android.content.ContentValues.TAG;
-
 /**
  * Created by ankit on 26/3/18.
  */
@@ -59,7 +57,7 @@ public class DataManager {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.i("Ankit", "onDataChange: increase"+String.valueOf(dataSnapshot.getValue()));
                 increase(String.valueOf(dataSnapshot.getValue()));
-                myRef.removeEventListener(this);
+                //myRef.removeEventListener(this);
 
             }
 

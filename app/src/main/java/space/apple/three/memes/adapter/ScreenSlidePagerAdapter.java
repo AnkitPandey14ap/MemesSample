@@ -10,7 +10,7 @@ import space.apple.three.memes.fragments.ScreenSlidePageFragment;
 import static space.apple.three.memes.utils.Constants.POSITION;
 
 public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
-    private final int totalMemes;
+    private int totalMemes;
 
     public ScreenSlidePagerAdapter(FragmentManager fm, int totalMemes) {
         super(fm);
@@ -30,6 +30,4 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return totalMemes;
     }
-
-
 }

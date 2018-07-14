@@ -8,11 +8,11 @@
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_home"
             android:title="Home" />
-        <item
+        <!--<item
             android:id="@+id/nav_favourite"
             android:icon="@drawable/like_star"
             android:title="Liked" />
-
+-->
     </group>
 
     <item android:title="Communicate">

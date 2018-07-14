@@ -30,26 +30,25 @@ import java.io.File;
 import java.util.ArrayList;
 
 import space.apple.three.memes.R;
-import space.apple.three.memes.utils.FullSizeImage;
+import space.apple.three.memes.activities.NavigationActivity;
 import space.apple.three.memes.data_manager.DataManager;
 import space.apple.three.memes.data_manager.SharedPref;
 import space.apple.three.memes.model.Meme;
 import space.apple.three.memes.model.RowPostion;
+import space.apple.three.memes.utils.FullSizeImage;
 
 import static space.apple.three.memes.utils.Constants.POSITION;
-import static space.apple.three.memes.activities.SplashActivity.urls;
 
 public class ScreenSlidePageFragment extends Fragment {
     private int position = 0;
-    private ArrayList<Meme> arrayList;
+    private ArrayList<Meme> arrayList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.image_view, container, false);
-        arrayList = new ArrayList<>();
-        arrayList = urls;
+        arrayList = NavigationActivity.arrayList;
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -72,7 +71,6 @@ public class ScreenSlidePageFragment extends Fragment {
         if (sp.isLiked(arrayList.get(position).getRef())) {
             likeButton.setChecked(true);
         }
-
         ivShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -133,7 +131,6 @@ public class ScreenSlidePageFragment extends Fragment {
 
             @Override
             public void onEventAnimationEnd(ImageView button, boolean buttonState) {
-
             }
 
             @Override
@@ -153,32 +150,25 @@ public class ScreenSlidePageFragment extends Fragment {
                         String shareBody = "For more funny Memes and Images download iMEMES android app ";
                         shareBody = shareBody + "https://play.google.com/store/apps/details?id=space.apple.three.memes \n\n";
 
-
                         Intent intent = new Intent(Intent.ACTION_SEND);
                         intent.putExtra(Intent.EXTRA_TEXT, shareBody);
 
                         String path = MediaStore.Images.Media.insertImage(getContext().getContentResolver(), bitmap, "", null);
                         Uri screenshotUri = Uri.parse(path);
 
-
                         intent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
                         intent.setType("image/*");
                         getContext().startActivity(Intent.createChooser(intent, "Share image via..."));
-
-
                     }
 
                     @Override
                     public void onBitmapFailed(Drawable errorDrawable) {
-
                     }
 
                     @Override
                     public void onPrepareLoad(Drawable placeHolderDrawable) {
-
                     }
                 });
-
     }
 
     private void fileDownload(String uRl, int position) {
@@ -202,11 +192,9 @@ public class ScreenSlidePageFragment extends Fragment {
                 .setAllowedOverRoaming(false).setTitle("Demo" + position)
                 .setDescription("Something useful. No, really.")
                 .setDestinationInExternalPublicDir("/iMemes", "iMemes.jpg");
-
+        assert mgr != null;
         mgr.enqueue(request);
-
     }
-
 
     public static ScreenSlidePageFragment newInstance() {
 
@@ -216,4 +204,5 @@ public class ScreenSlidePageFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
 }

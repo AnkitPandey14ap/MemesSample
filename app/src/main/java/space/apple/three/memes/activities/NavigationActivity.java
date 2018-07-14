@@ -13,10 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -25,23 +22,17 @@ import java.util.ArrayList;
 
 import space.apple.three.memes.R;
 import space.apple.three.memes.adapter.ScreenSlidePagerAdapter;
-import space.apple.three.memes.data_manager.SharedPref;
-import space.apple.three.memes.utils.transformer.HingeTransformation;
 import space.apple.three.memes.model.Meme;
-import space.apple.three.memes.model.RowPostion;
+import space.apple.three.memes.utils.transformer.HingeTransformation;
 
-import static space.apple.three.memes.activities.SplashActivity.urls;
+import static space.apple.three.memes.activities.SplashActivity.getUrls;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "Ankit";
-    private LinearLayoutManager mLayoutManager;
-    RecyclerView.Adapter mAdapter;
-
     Toolbar toolbar;
-
-    ArrayList<Meme> arrayList = new ArrayList<>();
+    public static ArrayList<Meme> arrayList = new ArrayList<>();
     private boolean doubleBackToExitPressedOnce;
     private ViewPager mPager;
     private ScreenSlidePagerAdapter mPagerAdapter;
@@ -52,7 +43,7 @@ public class NavigationActivity extends AppCompatActivity
         // This line enables to use vector recourse in app for device below API 21
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         setContentView(R.layout.activity_navigation);
-        arrayList = urls;
+        arrayList = getUrls();
         setUpUi();
     }
 
@@ -67,18 +58,19 @@ public class NavigationActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPager.setCurrentItem(0,true);
+                mPager.setCurrentItem(0, true);
             }
         });
     }
+
     private void setupViewPager() {
         mPager = findViewById(R.id.view_pager);
-        int size=arrayList.size();
-        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(),size);
+        int size = arrayList.size();
+        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), size);
         mPager.setAdapter(mPagerAdapter);
         //AntiClockSpinTransformation transformation = new AntiClockSpinTransformation();
-        HingeTransformation transformation=new HingeTransformation();
-        mPager.setPageTransformer(true,transformation);
+        HingeTransformation transformation = new HingeTransformation();
+        mPager.setPageTransformer(true, transformation);
     }
 
     private void setUpDrawer() {
@@ -122,9 +114,9 @@ public class NavigationActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_favourite) {
+        /*if (id == R.id.nav_favourite) {
             RowPostion.pos = -1;
-            toolbar.setTitle("Favourite");
+            toolbar.setTitle(Constants.FAVOURITE);
             SharedPref sp = new SharedPref(this);
             arrayList = new ArrayList<>();
             for (int i = 0; i < urls.size(); i++) {
@@ -133,18 +125,19 @@ public class NavigationActivity extends AppCompatActivity
                     arrayList.add(urls.get(i));
                 }
             }
-            mPagerAdapter.notifyDataSetChanged();
-
-
+//            mPager.setCurrentItem(0);
+//            mPagerAdapter.updateDataSet(arrayList.size());
 
             // Handle the camera action
-        } else if (id == R.id.nav_home) {
-            RowPostion.pos = -1;
-            toolbar.setTitle("iMemes");
+        } else*/
+        if (id == R.id.nav_home) {
+            mPager.setCurrentItem(0);
 
+            /*RowPostion.pos = -1;
+            toolbar.setTitle("iMemes");
             arrayList = urls;
             mPagerAdapter.notifyDataSetChanged();
-
+*/
         } else if (id == R.id.nav_share) {
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");

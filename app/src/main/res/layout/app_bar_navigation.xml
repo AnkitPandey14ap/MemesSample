@@ -29,5 +29,5 @@
         android:layout_marginBottom="72dp"
         android:layout_marginRight="16dp"
         app:rippleColor="#ffffff"
-        app:srcCompat="@drawable/icon_up" />
+        app:srcCompat="@drawable/ic_home" />
 </android.support.design.widget.CoordinatorLayout>

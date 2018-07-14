@@ -21,7 +21,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 
-
 import space.apple.three.memes.R;
 import space.apple.three.memes.data_manager.SharedPref;
 import space.apple.three.memes.model.Meme;
@@ -29,18 +28,18 @@ import space.apple.three.memes.model.Meme;
 public class SplashActivity extends AppCompatActivity {
 
     private static final String TAG = "Ankit";
-    FirebaseDatabase database;
-    DatabaseReference myRef;
-    DatabaseReference myRefToVisits;
-    DatabaseReference myRefToInstalls;
+    private static ArrayList<Meme> urls = new ArrayList<>();
+    private DatabaseReference myRef;
+    private DatabaseReference myRefToVisits;
 
     private ProgressBar progressBar2;
+    private DatabaseReference myRefToInstalls;
+    private boolean readyToGo = true;
 
-    public static ArrayList<String> keyList;
-    public static ArrayList<Meme> urls = new ArrayList<>();
-
-    private boolean isDataFetched=false;
-    private boolean readyToGo=true;
+    public static ArrayList<Meme> getUrls() {
+        Collections.shuffle(urls);
+        return urls;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,31 +49,26 @@ public class SplashActivity extends AppCompatActivity {
         progressBar2 = findViewById(R.id.progressBar2);
 
         // Write a message to the database
-        database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference("memesUrl");
-        myRefToVisits= database.getReference("visits");
-        myRefToInstalls= database.getReference("installs");
-
-
+        myRefToVisits = database.getReference("visits");
+        myRefToInstalls = database.getReference("installs");
 
         startDataFetching();
-
-
-
 
     }
 
     private void startDataFetching() {
-        if(isNetworkAvailable()){
+        if (isNetworkAvailable()) {
             final SharedPref sp = new SharedPref(this);
-            if(!sp.isRegistered()){
+            if (!sp.isRegistered()) {
                 final String[] x = new String[1];
                 myRefToInstalls.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         x[0] = String.valueOf(dataSnapshot.getValue());
                         myRefToInstalls.removeEventListener(this);
-                        int c = Integer.parseInt(x[0])+1;
+                        int c = Integer.parseInt(x[0]) + 1;
                         sp.register();
                         myRefToInstalls.setValue(String.valueOf(c));
                     }
@@ -92,7 +86,7 @@ public class SplashActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     x[0] = String.valueOf(dataSnapshot.getValue());
                     myRefToVisits.removeEventListener(this);
-                    int c = Integer.parseInt(x[0])+1;
+                    int c = Integer.parseInt(x[0]) + 1;
 
                     myRefToVisits.setValue(String.valueOf(c));
                 }
@@ -105,7 +99,7 @@ public class SplashActivity extends AppCompatActivity {
             //fetch meme data now
             fetchData();
 
-        }else showNetworkErrorDialogue();
+        } else showNetworkErrorDialogue();
 
     }
 
@@ -116,27 +110,27 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.i(TAG, "onDataChange: splash");
-                    urls.clear();
-                    Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-                    for (DataSnapshot child:children) {
-                        Meme meme = child.getValue(Meme.class);
-                        urls.add(new Meme(meme.getUrl(),meme.getLike(),meme.getRef()));
+                urls.clear();
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                for (DataSnapshot child : children) {
+                    Meme meme = child.getValue(Meme.class);
+                    assert meme != null;
+                    urls.add(new Meme(meme.getUrl(), meme.getLike(), meme.getRef()));
 
+                }
+
+
+                if (urls.size() != 0) {
+                    Collections.reverse(urls);
+                    if (readyToGo) {
+                        readyToGo = false;
+
+                        myRef.removeEventListener(this);
+                        startActivity(new Intent(SplashActivity.this, NavigationActivity.class));
+                        finish();
                     }
 
-
-                    if(urls.size()!=0){
-                        Collections.reverse(urls);
-                        if(readyToGo){
-                            readyToGo= false;
-
-                            myRef.removeEventListener(this);
-                            startActivity(new Intent(SplashActivity.this,NavigationActivity.class));
-                            finish();
-                        }
-
-                    }
-
+                }
 
 
             }
@@ -149,7 +143,6 @@ public class SplashActivity extends AppCompatActivity {
 
             }
         });
-
 
 
     }
@@ -192,6 +185,7 @@ public class SplashActivity extends AppCompatActivity {
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert connectivityManager != null;
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
