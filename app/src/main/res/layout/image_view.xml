@@ -50,8 +50,7 @@
             android:text="Refrence"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/color_text"
-            android:src="@drawable/share_icon"/>
-
+            app:srcCompat="@drawable/share_icon"/>
 
         <com.varunest.sparkbutton.SparkButton
             android:id="@+id/spark_button"
@@ -63,8 +62,7 @@
             app:sparkbutton_iconSize="25dp"
             app:sparkbutton_inActiveImage="@drawable/unlike_star"
             app:sparkbutton_primaryColor="@color/primary_color"
-            app:sparkbutton_secondaryColor="@color/secondary_color"
-            />
+            app:sparkbutton_secondaryColor="@color/secondary_color" />
 
         <TextView
             android:id="@+id/likeCount"
@@ -75,7 +73,6 @@
             android:text="(0)"
             android:textColor="@color/color_text"/>
 
-
         <ImageView
             android:id="@+id/downloadAction"
             android:layout_width="25dp"
@@ -83,9 +80,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
             android:layout_marginRight="16dp"
-            android:src="@drawable/download_icon" />
+            app:srcCompat="@drawable/download_icon" />
 
     </RelativeLayout>
-
 
 </RelativeLayout>

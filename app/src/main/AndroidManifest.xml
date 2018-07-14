@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.FullSizeImage"
+            android:name=".utils.FullSizeImage"
             android:theme="@style/SplashTheme"></activity>
 
         <service android:name=".push_notification.MyFirebaseMessagingService">
